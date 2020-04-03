@@ -33,16 +33,12 @@ SUMMONING = 25
 DUNGEONEERING = 26
 DIVINATION = 27
 INVENTION = 28
+ARCHEOLOGY = 29
+
+NUM_SKILLS = 29
 
 # The template for a player stat request
 STAT_REQUEST = 'https://secure.runescape.com/m=hiscore/index_lite.ws?player='
-
-# Current player xp dict template INCOMPLETE TEMPLATE
-CURRENT_XPS = {'name': '-', 'overall': 0, 'attack': 0, 'defence': 0,
-               'strength': 0, 'constitution': 0, 'ranged': 0, 'prayer': 0,
-               'magic': 0, 'cooking': 0, 'woodcutting': 0, 'fletching': 0,
-               'fishing': 0, 'firemaking': 0, 'crafting': 0, 'smithing': 0,
-               'mining': 0, 'herblore': 0}
 
 # Return a list of clanmates with their current xp in each skill
 def get_current_xp_all():
@@ -86,7 +82,7 @@ def get_current_xp_all():
 
         # Add each skill xp data point to the clanmate
         cm_stats = req.text.split("\n")
-        for i in range(28):
+        for i in range(NUM_SKILLS):
             cm_data.append(cm_stats[i].split(",")[2])
 
         # Add the clanmate with their data to the list of clanmates
@@ -167,32 +163,20 @@ def pull_xp_from_file(fname):
     return data
 
 # Returns a list with all xp gained
-def calc_xp_gained(first, second):
-    if (len(first) != len(second)):
-        print('Lengths of first and second lists are different.')
-        sys.exit()
+def calc_xp_gained(old, new):
+    results = []
+    ares = []
 
-    # print(first)
-    # print(second)
+    for e_o in old:
+        for e_n in new:
+            if e_o[0] == e_n[0]:
+                ares.append(e_o[0])
+                for i in range(1, len(e_n)):
+                    ares.append(e_n[i] - e_o[i])
+                results.append(ares)
+                ares = []
 
-    ret = first
-
-    # Calculate differences in xp
-    for i in range(len(first)):
-        for j in range(len(first[i])):
-            # If the skill is not unlocked or hasn't been trained
-            if (first[i][j] == -1):
-                ret[i][j] = second[i][j]
-            # If the data is not numeric (is the name) and the names are the same
-            elif ((type(first[i][j]) is str) and (type(second[i][j]) is str) and (first[i][j] == second[i][j])):
-                ret[i][j] = first[i][j]
-            # If the data is numeric (not a name field)
-            elif ((type(first[i][j]) is int) and (type(second[i][j]) is int)):
-                ret[i][j] = second[i][j] - first[i][j]
-            else:
-                ret[i][j] = 0
-
-    return ret
+    return results
 
 # Returns a list of rsn's with xp gained in one skill (list passed in should have gains)
 def get_xp_one_skill(list, skill):
@@ -215,31 +199,21 @@ def filter_no_xp_gained(list):
 
     return ret
 
-
-# Removes people from the result list that gained no xp in the skill
-def filter_no_xp_gained_one_skill(list):
-    ret = []
-
-    for i in range(len(list)):
-        if (list[i][1] != 0):
-            ret.append(list[i])
-
-    return ret
-
 # Competition start
 # current_xp = get_current_xp_all()
-# store_xp_in_file(current_xp, 'slayer_1_start')
+# store_xp_in_file(current_xp, 'arch_test_start')
 
 # Get current standings
-start_xp = pull_xp_from_file('slayer_1_start')
-start_xp = get_xp_one_skill(start_xp, SLAYER)
-current_xp = get_current_xp_all()
-current_xp = get_xp_one_skill(current_xp, SLAYER)
-current_xp_gains = calc_xp_gained(start_xp, current_xp)
-current_xp_gains = filter_no_xp_gained(current_xp_gains)
-current_xp_gains = sorted(current_xp_gains, key=lambda l:l[1], reverse=True)
-for i in range(len(current_xp_gains)):
-    print(str(i + 1) + ". " + current_xp_gains[i][0] + '\t' + str(current_xp_gains[i][1]))
+def get_current_standings():
+    start_xp = pull_xp_from_file('arch_test_start')
+    start_xp = get_xp_one_skill(start_xp, ARCHEOLOGY)
+    current_xp = get_current_xp_all()
+    current_xp = get_xp_one_skill(current_xp, ARCHEOLOGY)
+    current_xp_gains = calc_xp_gained(start_xp, current_xp)
+    current_xp_gains = filter_no_xp_gained(current_xp_gains)
+    current_xp_gains = sorted(current_xp_gains, key=lambda l:l[1], reverse=True)
+    for i in range(len(current_xp_gains)):
+        print(str(i + 1) + '. ' + str(current_xp_gains[i][0]) + '\t' + str(current_xp_gains[i][1]))
 
 # Get final standings
 # start_xp = pull_xp_from_file('test_start')
