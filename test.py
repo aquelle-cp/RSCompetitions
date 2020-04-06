@@ -52,5 +52,30 @@ class TestCalcXPGained(unittest.TestCase):
 
         self.assertEqual(res, expected)
 
+class TestCalcCompGains(unittest.TestCase):
+    def test_one_skill(self):
+        gains = [['test1', 90, 30, 24], ['test2', 11, 43, 1], ['test3', 48, 32, 12], ['test4', 120, 40, 11]]
+        skills = [ATTACK]
+
+        res = calc_comp_gains(gains, skills)
+
+        expected = [['test1', 30], ['test2', 43], ['test3', 32], ['test4', 40]]
+
+    def test_two_skills(self):
+        gains = [['test1', 90, 30, 24], ['test2', 11, 43, 1], ['test3', 48, 32, 12], ['test4', 120, 40, 11]]
+        skills = [ATTACK, DEFENCE]
+
+        res = calc_comp_gains(gains, skills)
+
+        expected = [['test1', 54], ['test2', 44], ['test3', 44], ['test4', 51]]
+
+    def test_three_skills(self):
+        gains = [['test1', 90, 30, 24], ['test2', 11, 43, 1], ['test3', 48, 32, 12], ['test4', 120, 40, 11]]
+        skills = [OVERALL, ATTACK, DEFENCE]
+
+        res = calc_comp_gains(gains, skills)
+
+        expected = [['test1', 144], ['test2', 55], ['test3', 92], ['test4', 171]]
+
 if __name__ == '__main__':
     unittest.main()

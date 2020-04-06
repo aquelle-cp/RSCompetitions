@@ -162,21 +162,43 @@ def pull_xp_from_file(fname):
     f.close()
     return data
 
+# TODO -1's should all be changed to 0's
 # Returns a list with all xp gained
 def calc_xp_gained(old, new):
     results = []
     ares = []
 
+    # For every element in the original list find the matching name in the new list
     for e_o in old:
         for e_n in new:
             if e_o[0] == e_n[0]:
                 ares.append(e_o[0])
                 for i in range(1, len(e_n)):
-                    ares.append(e_n[i] - e_o[i])
+                    # If they haven't started the skill set xp to 0
+                    if (e_n[i] == '-1'):
+                        ares.append(0)
+                    # If they started the skill during the comp
+                    elif (e_o[i] == '-1'):
+                        ares.append(e_n[i])
+                    else:
+                        ares.append(e_n[i] - e_o[i])
                 results.append(ares)
                 ares = []
 
     return results
+
+# Add up the xp gained of all the skills in the competition
+def calc_comp_gains(gains, skills):
+    res = []
+    ares = []
+
+    for player in gains:
+        ares.append(player[0])
+        ares.append(0)
+        for s in skills:
+            ares[1] += player[s]
+        res.append(ares)
+        ares = []
 
 # Returns a list of rsn's with xp gained in one skill (list passed in should have gains)
 def get_xp_one_skill(list, skill):
@@ -201,11 +223,12 @@ def filter_no_xp_gained(list):
 
 # Competition start
 # current_xp = get_current_xp_all()
-# store_xp_in_file(current_xp, 'arch_test_start')
+# store_xp_in_file(current_xp, 'arch_1_start')
 
 # Get current standings
 def get_current_standings():
-    start_xp = pull_xp_from_file('arch_test_start')
+    skills = [ARCHEOLOGY]
+    start_xp = pull_xp_from_file('arch_1_start')
     start_xp = get_xp_one_skill(start_xp, ARCHEOLOGY)
     current_xp = get_current_xp_all()
     current_xp = get_xp_one_skill(current_xp, ARCHEOLOGY)
@@ -214,6 +237,8 @@ def get_current_standings():
     current_xp_gains = sorted(current_xp_gains, key=lambda l:l[1], reverse=True)
     for i in range(len(current_xp_gains)):
         print(str(i + 1) + '. ' + str(current_xp_gains[i][0]) + '\t' + str(current_xp_gains[i][1]))
+
+# get_current_standings()
 
 # Get final standings
 # start_xp = pull_xp_from_file('test_start')
