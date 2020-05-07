@@ -43,24 +43,24 @@ STAT_REQUEST = 'https://secure.runescape.com/m=hiscore/index_lite.ws?player='
 # Return a list of clanmates with their current xp in each skill
 def get_current_xp_all():
     # Get list of Acorn clanmates
-    clanmate_res = requests.get('http://services.runescape.com/m=clan-hiscores/members_lite.ws?clanName=Acorn')
-    clanmate_split = clanmate_res.text.split("\n")
-    c_split_length = len(clanmate_split)
+    # clanmate_res = requests.get('http://services.runescape.com/m=clan-hiscores/members_lite.ws?clanName=Acorn')
+    # clanmate_split = clanmate_res.text.split("\n")
+    # c_split_length = len(clanmate_split)
 
-    clanmates = []
+    clanmates = ['Aiyfe', 'Mrawr', 'Supaskulled', 'MiracleEdrea', 'Clloud', 'Firekev', 'Calmcrow', 'TheTrueHelix', 'Gadnuka', 'Don Dandello']
     all_cm_data = []
 
     # Get the list of clanmates in Acorn
-    for i in range(c_split_length):
-        if i != 0:
-            clanmates.append(clanmate_split[i].split(",")[0])
+    # for i in range(c_split_length):
+    #     if i != 0:
+    #         clanmates.append(clanmate_split[i].split(",")[0])
 
     # Add in any eternal guests
-    clanmates.append('Fairytale')
+    # clanmates.append('Fairytale')
 
     # Make sure there are no empty strings
-    while '' in clanmates:
-        clanmates.remove('')
+    # while '' in clanmates:
+    #     clanmates.remove('')
 
     # Store the number of people in the clanmate list
     clanmate_length = len(clanmates)
@@ -223,22 +223,22 @@ def filter_no_xp_gained(list):
 
 # Competition start
 # current_xp = get_current_xp_all()
-# store_xp_in_file(current_xp, 'arch_1_start')
+# store_xp_in_file(current_xp, 'div_1_start')
 
 # Get current standings
 def get_current_standings():
-    skills = [ARCHEOLOGY]
-    start_xp = pull_xp_from_file('arch_1_start')
-    start_xp = get_xp_one_skill(start_xp, ARCHEOLOGY)
+    skills = [DIVINATION]
+    start_xp = pull_xp_from_file('div_1_start')
+    start_xp = get_xp_one_skill(start_xp, DIVINATION)
     current_xp = get_current_xp_all()
-    current_xp = get_xp_one_skill(current_xp, ARCHEOLOGY)
+    current_xp = get_xp_one_skill(current_xp, DIVINATION)
     current_xp_gains = calc_xp_gained(start_xp, current_xp)
     current_xp_gains = filter_no_xp_gained(current_xp_gains)
     current_xp_gains = sorted(current_xp_gains, key=lambda l:l[1], reverse=True)
     for i in range(len(current_xp_gains)):
         print(str(i + 1) + '. ' + str(current_xp_gains[i][0]) + '\t' + str(current_xp_gains[i][1]))
 
-# get_current_standings()
+get_current_standings()
 
 # Get final standings
 # start_xp = pull_xp_from_file('test_start')
