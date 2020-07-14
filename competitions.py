@@ -47,7 +47,7 @@ def get_current_xp_all():
     # clanmate_split = clanmate_res.text.split("\n")
     # c_split_length = len(clanmate_split)
 
-    clanmates = ['Aiyfe', 'Mrawr', 'Supaskulled', 'MiracleEdrea', 'Clloud', 'Firekev', 'Calmcrow', 'TheTrueHelix', 'Gadnuka', 'Don Dandello']
+    clanmates = ['Aiyfe', 'Mrawr', 'Supaskulled', 'MiracleEdrea', 'Firekev', 'Calmcrow', 'Fairytale']
     all_cm_data = []
 
     # Get the list of clanmates in Acorn
@@ -223,22 +223,22 @@ def filter_no_xp_gained(list):
 
 # Competition start
 # current_xp = get_current_xp_all()
-# store_xp_in_file(current_xp, 'div_1_start')
+# store_xp_in_file(current_xp, 'arch_3_start')
 
 # Get current standings
-def get_current_standings():
-    skills = [DIVINATION]
-    start_xp = pull_xp_from_file('div_1_start')
-    start_xp = get_xp_one_skill(start_xp, DIVINATION)
+def get_current_standings(skill, file_name):
+    skills = [skill]
+    start_xp = pull_xp_from_file(file_name)
+    start_xp = get_xp_one_skill(start_xp, skill)
     current_xp = get_current_xp_all()
-    current_xp = get_xp_one_skill(current_xp, DIVINATION)
+    current_xp = get_xp_one_skill(current_xp, skill)
     current_xp_gains = calc_xp_gained(start_xp, current_xp)
     current_xp_gains = filter_no_xp_gained(current_xp_gains)
     current_xp_gains = sorted(current_xp_gains, key=lambda l:l[1], reverse=True)
     for i in range(len(current_xp_gains)):
         print(str(i + 1) + '. ' + str(current_xp_gains[i][0]) + '\t' + str(current_xp_gains[i][1]))
 
-get_current_standings()
+get_current_standings(ARCHEOLOGY, 'arch_3_start')
 
 # Get final standings
 # start_xp = pull_xp_from_file('test_start')
