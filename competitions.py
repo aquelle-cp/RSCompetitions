@@ -41,13 +41,12 @@ NUM_SKILLS = 29
 STAT_REQUEST = 'https://secure.runescape.com/m=hiscore/index_lite.ws?player='
 
 # Return a list of clanmates with their current xp in each skill
-def get_current_xp_all():
+def get_current_xp_all(clanmates):
     # Get list of Acorn clanmates
     # clanmate_res = requests.get('http://services.runescape.com/m=clan-hiscores/members_lite.ws?clanName=Acorn')
     # clanmate_split = clanmate_res.text.split("\n")
     # c_split_length = len(clanmate_split)
 
-    clanmates = ['Aiyfe', 'Mrawr', 'Supaskulled', 'MiracleEdrea', 'Firekev', 'Calmcrow', 'Fairytale']
     all_cm_data = []
 
     # Get the list of clanmates in Acorn
@@ -221,16 +220,12 @@ def filter_no_xp_gained(list):
 
     return ret
 
-# Competition start
-# current_xp = get_current_xp_all()
-# store_xp_in_file(current_xp, 'arch_3_start')
-
 # Get current standings
-def get_current_standings(skill, file_name):
+def get_current_standings(participants, skill, file_name):
     skills = [skill]
     start_xp = pull_xp_from_file(file_name)
     start_xp = get_xp_one_skill(start_xp, skill)
-    current_xp = get_current_xp_all()
+    current_xp = get_current_xp_all(participants)
     current_xp = get_xp_one_skill(current_xp, skill)
     current_xp_gains = calc_xp_gained(start_xp, current_xp)
     current_xp_gains = filter_no_xp_gained(current_xp_gains)
@@ -238,11 +233,10 @@ def get_current_standings(skill, file_name):
     for i in range(len(current_xp_gains)):
         print(str(i + 1) + '. ' + str(current_xp_gains[i][0]) + '\t' + str(current_xp_gains[i][1]))
 
-get_current_standings(ARCHEOLOGY, 'arch_3_start')
+participants = ['Riunn', 'CompCake', 'Mrawr', 'Supaskulled', 'Gadnuka', 'Firekev', 'TheTrueHelix']
 
-# Get final standings
-# start_xp = pull_xp_from_file('test_start')
-# finish_xp = get_current_xp_all()
-# store_xp_in_file(finish_xp, 'test_finish')
-# final_xp_gains_all = calc_xp_gained(start_xp, finish_xp)
-# print(final_xp_gains_all)
+# Competition start
+# current_xp = get_current_xp_all()
+# store_xp_in_file(current_xp, 'hunter_1_start')
+
+get_current_standings(participants, HUNTER, 'hunter_1_start')
