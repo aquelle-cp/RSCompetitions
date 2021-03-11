@@ -1,6 +1,7 @@
 import requests
 import os
 import sys
+import discord
 
 # If xp is -1 will have to skip over, doesn't have reqs or is at 0 xp
 
@@ -186,7 +187,7 @@ def calc_xp_gained(old, new):
 
     return results
 
-# Add up the xp gained of all the skills in the competition
+# Add up the xp gained in each of the listed skills
 def calc_comp_gains(gains, skills):
     res = []
     ares = []
@@ -230,13 +231,48 @@ def get_current_standings(participants, skill, file_name):
     current_xp_gains = calc_xp_gained(start_xp, current_xp)
     current_xp_gains = filter_no_xp_gained(current_xp_gains)
     current_xp_gains = sorted(current_xp_gains, key=lambda l:l[1], reverse=True)
+    ret_str = ''
     for i in range(len(current_xp_gains)):
-        print(str(i + 1) + '. ' + str(current_xp_gains[i][0]) + '\t' + str(current_xp_gains[i][1]))
+        ret_str += (str(i + 1) + '. ' + str(current_xp_gains[i][0]) + '\t' + '{:,}'.format(current_xp_gains[i][1])) + '\n'
 
-participants = ['Riunn', 'CompCake', 'Mrawr', 'Supaskulled', 'Gadnuka', 'Firekev', 'TheTrueHelix']
+    return ret_str
+
+always_in = ['Riunn', 'Mrawr', 'Supaskulled df']
+participants = ['Riunn', 'Mrawr', 'Gadnuka', 'Firekev', 'TheTrueHelix', 'MiracleEdrea', 'T ah', 'JK3', 'Supaskulled']
+comp_skill = OVERALL
+start_file = 'all_1_start'
+standings_header = 'DXP Weekend Progress'
 
 # Competition start
-# current_xp = get_current_xp_all()
-# store_xp_in_file(current_xp, 'hunter_1_start')
+# current_xp = get_current_xp_all(participants)
+# store_xp_in_file(current_xp, start_file)
 
-get_current_standings(participants, HUNTER, 'hunter_1_start')
+# Competition standings update
+# print(get_current_standings(participants, comp_skill, start_file))
+
+client = discord.Client()
+
+@client.event
+async def on_ready():
+    print('We have logged in as {0.user}'.format(client))
+
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+
+    # Start comp: valid only if used by Alex, Ned, or Sandor
+    # if ((message.author.name == 'Riunn' or message.author.name == 'Mrawr' or message.author.name == 'ColonelSanders')
+    #     and message.content.startswith('!start comp')):
+    #     await message.channel.send('Valid admin, but competitions are not set up yet')
+
+    if message.content.startswith('!standings'):
+        await message.channel.send(standings_header)
+        await message.channel.send(get_current_standings(participants, comp_skill, start_file))
+
+    if message.content.startswith('!help'):
+        str = 'use !standings to check standings for current competition'
+        await message.channel.send(str)
+
+
+client.run('Njk1MDY4NTIwNDMzODQ0MjQ2.XoUzAQ._kPEc-PAINjZ_O9xmST7UBPVgV4')
