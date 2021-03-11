@@ -3,6 +3,8 @@ import os
 import sys
 import discord
 
+from key import *
+
 # If xp is -1 will have to skip over, doesn't have reqs or is at 0 xp
 
 # Constants for request parsing
@@ -275,4 +277,4 @@ async def on_message(message):
         await message.channel.send(str)
 
 
-client.run('Njk1MDY4NTIwNDMzODQ0MjQ2.XoUzAQ._kPEc-PAINjZ_O9xmST7UBPVgV4')
+client.run(DISCORD_KEY)
