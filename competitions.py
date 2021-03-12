@@ -246,8 +246,8 @@ start_file = 'thieving_1_start'
 standings_header = ':moneybag: Thieving Competition Standings'
 
 # Competition start
-# current_xp = get_current_xp_all(participants)
-# store_xp_in_file(current_xp, start_file)
+current_xp = get_current_xp_all(participants)
+store_xp_in_file(current_xp, start_file)
 
 # Competition standings update
 # print(get_current_standings(participants, comp_skill, start_file))
@@ -277,4 +277,4 @@ async def on_message(message):
         await message.channel.send(str)
 
 
-client.run(DISCORD_KEY)
+# client.run(DISCORD_KEY)
