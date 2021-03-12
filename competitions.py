@@ -239,11 +239,11 @@ def get_current_standings(participants, skill, file_name):
 
     return ret_str
 
-always_in = ['Riunn', 'Mrawr', 'Supaskulled df']
-participants = ['Riunn', 'Mrawr', 'Gadnuka', 'Firekev', 'TheTrueHelix', 'MiracleEdrea', 'T ah', 'JK3', 'Supaskulled']
-comp_skill = OVERALL
-start_file = 'all_1_start'
-standings_header = 'DXP Weekend Progress'
+always_in = ['Andy Hunts', 'Mrawr', 'Supaskulled']
+participants = ['Andy Hunts', 'Mrawr', 'Gadnuka', 'Firekev', 'TheTrueHelix', 'MiracleEdrea', 'Jake4216', 'JK3', 'Supaskulled', 'Matthewalle2', 'die1988', 'Fairytale']
+comp_skill = THIEVING
+start_file = 'thieving_1_start'
+standings_header = ':moneybag: Thieving Competition Standings'
 
 # Competition start
 # current_xp = get_current_xp_all(participants)
