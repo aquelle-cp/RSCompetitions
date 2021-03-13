@@ -268,12 +268,12 @@ async def on_message(message):
     #     and message.content.startswith('!start comp')):
     #     await message.channel.send('Valid admin, but competitions are not set up yet')
 
-    if message.content.startswith('!standings'):
+    if message.content.startswith('!standings') or message.content.startswith('compbot do the thing'):
         await message.channel.send(standings_header)
         await message.channel.send(get_current_standings(participants, comp_skill, start_file))
 
     if message.content.startswith('!help'):
-        str = 'use !standings to check standings for current competition'
+        str = 'use "!standings" or "compbot do the thing" to check standings for current competition'
         await message.channel.send(str)
 
 
