@@ -240,10 +240,10 @@ def get_current_standings(participants, skill, file_name):
     return ret_str
 
 always_in = ['Andy Hunts', 'Mrawr', 'Supaskulled']
-participants = ['Andy Hunts', 'Mrawr', 'Gadnuka', 'Firekev', 'TheTrueHelix', 'MiracleEdrea', 'Jake4216', 'JK3', 'Supaskulled', 'Matthewalle2', 'die1988', 'Fairytale']
-comp_skill = THIEVING
-start_file = 'thieving_1_start'
-standings_header = ':moneybag: Thieving Competition Standings'
+participants =  ['Andy Hunts', 'Mrawr', 'Gadnuka', 'TheTrueHelix', 'MiracleEdrea', 'Supaskulled', 'Matthewalle2', 'die1988', 'Dead Doc 13']
+comp_skill = WOODCUTTING
+start_file = 'gauntlet_1_wc_start'
+standings_header = ':evergreen_tree: Gauntlet Part 1: Woodcutting Standings'
 
 # Competition start
 # current_xp = get_current_xp_all(participants)
