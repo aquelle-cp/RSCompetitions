@@ -241,9 +241,9 @@ def get_current_standings(participants, skill, file_name):
 
 always_in = ['Andy Hunts', 'Mrawr', 'Supaskulled']
 participants =  ['Andy Hunts', 'Mrawr', 'Gadnuka', 'TheTrueHelix', 'MiracleEdrea', 'Supaskulled', 'Matthewalle2', 'die1988', 'Dead Doc 13']
-comp_skill = WOODCUTTING
-start_file = 'gauntlet_1_wc_start'
-standings_header = ':evergreen_tree: Gauntlet Part 1: Woodcutting Standings'
+comp_skill = FLETCHING
+start_file = 'gauntlet_1_fletch_start'
+standings_header = ':bow_and_arrow: Gauntlet Part 2: Fletching Standings'
 
 # Competition start
 # current_xp = get_current_xp_all(participants)
