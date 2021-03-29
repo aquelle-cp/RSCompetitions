@@ -241,9 +241,9 @@ def get_current_standings(participants, skill, file_name):
 
 always_in = ['Andy Hunts', 'Mrawr', 'Supaskulled']
 participants =  ['Andy Hunts', 'Mrawr', 'Gadnuka', 'TheTrueHelix', 'MiracleEdrea', 'Supaskulled', 'Matthewalle2', 'die1988', 'Dead Doc 13']
-comp_skill = FLETCHING
-start_file = 'gauntlet_1_fletch_start'
-standings_header = ':bow_and_arrow: Gauntlet Part 2: Fletching Standings'
+comp_skill = MINING
+start_file = 'gauntlet_1_mining_start'
+standings_header = ':pick: Gauntlet Part 3: Mining Standings'
 
 # Competition start
 # current_xp = get_current_xp_all(participants)
@@ -268,7 +268,7 @@ async def on_message(message):
     #     and message.content.startswith('!start comp')):
     #     await message.channel.send('Valid admin, but competitions are not set up yet')
 
-    if message.content.startswith('!standings') or message.content.startswith('compbot do the thing'):
+    if message.content.startswith('!standings') or message.content.startswith('compbot'):
         await message.channel.send(standings_header)
         await message.channel.send(get_current_standings(participants, comp_skill, start_file))
 
