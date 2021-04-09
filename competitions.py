@@ -225,7 +225,7 @@ def filter_no_xp_gained(list):
 
 # Get current standings
 def get_current_standings(participants, skill, file_name):
-    skills = [skill]
+    # skills = [skill]
     start_xp = pull_xp_from_file(file_name)
     start_xp = get_xp_one_skill(start_xp, skill)
     current_xp = get_current_xp_all(participants)
@@ -239,10 +239,56 @@ def get_current_standings(participants, skill, file_name):
 
     return ret_str
 
+def get_current_standings_two_skills_two_teams(participants, skill1, skill2, file_name, team1, team2):
+    start_xp = pull_xp_from_file(file_name)
+    start_xp1 = get_xp_one_skill(start_xp, skill1)
+    start_xp2 = get_xp_one_skill(start_xp, skill2)
+    current_xp = get_current_xp_all(participants)
+    current_xp1 = get_xp_one_skill(current_xp, skill1)
+    current_xp2 = get_xp_one_skill(current_xp, skill2)
+    current_xp_gains1 = calc_xp_gained(start_xp1, current_xp1)
+    current_xp_gains2 = calc_xp_gained(start_xp2, current_xp2)
+
+    current_xp_gains = []
+    for i in range(len(current_xp_gains1)):
+        current_xp_gains.append([current_xp_gains1[i][0], current_xp_gains1[i][1] + current_xp_gains2[i][1]])
+    current_xp_gains = filter_no_xp_gained(current_xp_gains)
+    current_xp_gains = sorted(current_xp_gains, key=lambda l:l[1], reverse=True)
+
+    team_xp = divide_xp_into_teams(team1, team2, current_xp_gains)
+    team1_xp = team_xp[0]
+    team2_xp = team_xp[1]
+
+    ret_str = ''
+    ret_str += 'Team Cabbage :leafy_green: Xp\n'
+    for i in range(len(team1_xp)):
+        ret_str += str(i) + '. ' + str(team1_xp[i][0]) + '\t'  + '{:,}'.format(team1_xp[i][1]) + '\n'
+    ret_str += '\nTeam Potatoes :potato: Xp\n'
+    for i in range(len(team2_xp)):
+        ret_str += str(i) + '. ' + str(team2_xp[i][0]) + '\t'  + '{:,}'.format(team2_xp[i][1]) + '\n'
+
+    # for i in range(len(current_xp_gains)):
+    #     ret_str += (str(i + 1) + '. ' + str(current_xp_gains[i][0]) + '\t' + '{:,}'.format(current_xp_gains[i][1])) + '\n'
+
+    return ret_str
+
+def divide_xp_into_teams(team1, team2, current_xp_gains):
+    team1_xp = [['Total', 0]]
+    team2_xp = [['Total', 0]]
+    for i in range(len(current_xp_gains)):
+        if current_xp_gains[i][0] in team1:
+            team1_xp[0][1] += current_xp_gains[i][1]        # Add this person's xp to their team's total xp
+            team1_xp.append(current_xp_gains[i])
+        elif current_xp_gains[i][0] in team2:
+            team2_xp[0][1] += current_xp_gains[i][1]
+            team2_xp.append(current_xp_gains[i])
+
+    return [team1_xp, team2_xp]
+
 always_in = ['Andy Hunts', 'Mrawr', 'Supaskulled']
-participants =  ['Andy Hunts', 'Mrawr', 'Gadnuka', 'TheTrueHelix', 'MiracleEdrea', 'Supaskulled', 'Matthewalle2', 'die1988', 'Dead Doc 13']
-comp_skill = MINING
-start_file = 'gauntlet_1_mining_start'
+participants =  ['Andy Hunts', 'Mrawr', 'Gadnuka', 'MiracleEdrea', 'Matthewalle2', 'die1988', 'Firekev']
+comp_skill = WOODCUTTING
+start_file = 'div_cook_1_start'
 standings_header = ':pick: Gauntlet Part 3: Mining Standings'
 
 # Competition start
@@ -251,6 +297,12 @@ standings_header = ':pick: Gauntlet Part 3: Mining Standings'
 
 # Competition standings update
 # print(get_current_standings(participants, comp_skill, start_file))
+
+team1 = ['Matthewalle2', 'Mrawr', 'Gadnuka']
+team2 = ['die1988', 'Firekev', 'Andy Hunts', 'MiracleEdrea']
+skill1 = DIVINATION
+skill2 = COOKING
+# print(get_current_standings_two_skills_two_teams(participants, skill1, skill2, start_file, team1, team2))
 
 client = discord.Client()
 
@@ -269,8 +321,9 @@ async def on_message(message):
     #     await message.channel.send('Valid admin, but competitions are not set up yet')
 
     if message.content.startswith('!standings') or message.content.startswith('compbot'):
-        await message.channel.send(standings_header)
-        await message.channel.send(get_current_standings(participants, comp_skill, start_file))
+        # await message.channel.send(standings_header)
+        # await message.channel.send(get_current_standings(participants, comp_skill, start_file))
+        await message.channel.send(get_current_standings_two_skills_two_teams(participants, skill1, skill2, start_file, team1, team2))
 
     if message.content.startswith('!help'):
         str = 'use "!standings" or "compbot do the thing" to check standings for current competition'
