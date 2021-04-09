@@ -323,6 +323,7 @@ async def on_message(message):
     if message.content.startswith('!standings') or message.content.startswith('compbot'):
         # await message.channel.send(standings_header)
         # await message.channel.send(get_current_standings(participants, comp_skill, start_file))
+        await message.channel.send('loading...')
         await message.channel.send(get_current_standings_two_skills_two_teams(participants, skill1, skill2, start_file, team1, team2))
 
     if message.content.startswith('!help'):
