@@ -239,6 +239,32 @@ def get_current_standings(participants, skill, file_name):
 
     return ret_str
 
+def get_current_standings_one_skill_two_teams(participants, skill, file_name, team1, team2):
+    start_xp = pull_xp_from_file(file_name)
+    start_xp = get_xp_one_skill(start_xp, skill)
+    current_xp = get_current_xp_all(participants)
+    current_xp = get_xp_one_skill(current_xp, skill)
+    current_xp_gains = calc_xp_gained(start_xp, current_xp)
+    current_xp_gains = filter_no_xp_gained(current_xp_gains)
+    current_xp_gains = sorted(current_xp_gains, key=lambda l:l[1], reverse=True)
+
+    team_xp = divide_xp_into_teams(team1, team2, current_xp_gains)
+    team1_xp = team_xp[0]
+    team2_xp = team_xp[1]
+
+    ret_str = ':top_hat: Magic Comp Standings\n'
+    ret_str += 'Team 1:\n'
+    for i in range(len(team1_xp)):
+        ret_str += str(i) + '. ' + str(team1_xp[i][0]) + '\t'  + '{:,}'.format(team1_xp[i][1]) + '\n'
+    ret_str += '\nTeam 2:\n'
+    for i in range(len(team2_xp)):
+        ret_str += str(i) + '. ' + str(team2_xp[i][0]) + '\t'  + '{:,}'.format(team2_xp[i][1]) + '\n'
+
+    # for i in range(len(current_xp_gains)):
+    #     ret_str += (str(i + 1) + '. ' + str(current_xp_gains[i][0]) + '\t' + '{:,}'.format(current_xp_gains[i][1])) + '\n'
+
+    return ret_str
+
 def get_current_standings_two_skills_two_teams(participants, skill1, skill2, file_name, team1, team2):
     start_xp = pull_xp_from_file(file_name)
     start_xp1 = get_xp_one_skill(start_xp, skill1)
@@ -286,10 +312,13 @@ def divide_xp_into_teams(team1, team2, current_xp_gains):
     return [team1_xp, team2_xp]
 
 always_in = ['Andy Hunts', 'Mrawr', 'Supaskulled']
-participants =  ['Andy Hunts', 'Mrawr', 'Gadnuka', 'MiracleEdrea', 'Matthewalle2', 'die1988', 'Firekev']
-comp_skill = WOODCUTTING
-start_file = 'div_cook_1_start'
+participants =  ['Andy Hunts', 'Firekev', 'Gadnuka', 'Furry Daddy']
+comp_skill = MAGIC
+start_file = 'magic_1_start'
 standings_header = ':pick: Gauntlet Part 3: Mining Standings'
+
+team1 = ['Andy Hunts', 'Firekev']
+team2 = ['Furry Daddy', 'Gadnuka']
 
 # Competition start
 # current_xp = get_current_xp_all(participants)
@@ -298,11 +327,7 @@ standings_header = ':pick: Gauntlet Part 3: Mining Standings'
 # Competition standings update
 # print(get_current_standings(participants, comp_skill, start_file))
 
-team1 = ['Matthewalle2', 'Mrawr', 'Gadnuka']
-team2 = ['die1988', 'Firekev', 'Andy Hunts', 'MiracleEdrea']
-skill1 = DIVINATION
-skill2 = COOKING
-# print(get_current_standings_two_skills_two_teams(participants, skill1, skill2, start_file, team1, team2))
+# print(get_current_standings_one_skill_two_teams(participants, comp_skill, start_file, team1, team2))
 
 client = discord.Client()
 
@@ -324,7 +349,7 @@ async def on_message(message):
         # await message.channel.send(standings_header)
         # await message.channel.send(get_current_standings(participants, comp_skill, start_file))
         await message.channel.send('loading...')
-        await message.channel.send(get_current_standings_two_skills_two_teams(participants, skill1, skill2, start_file, team1, team2))
+        await message.channel.send(get_current_standings_one_skill_two_teams(participants, comp_skill, start_file, team1, team2))
 
     if message.content.startswith('!help'):
         str = 'use "!standings" or "compbot do the thing" to check standings for current competition'
