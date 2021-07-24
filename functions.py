@@ -1,7 +1,6 @@
 import requests
 import os
 import sys
-import discord
 
 from key import *
 
@@ -43,27 +42,25 @@ NUM_SKILLS = 29
 # The template for a player stat request
 STAT_REQUEST = 'https://secure.runescape.com/m=hiscore/index_lite.ws?player='
 
-# Return a list of clanmates with their current xp in each skill
-def get_current_xp_all(clanmates):
-    # Get list of Acorn clanmates
-    # clanmate_res = requests.get('http://services.runescape.com/m=clan-hiscores/members_lite.ws?clanName=Acorn')
-    # clanmate_split = clanmate_res.text.split("\n")
-    # c_split_length = len(clanmate_split)
-
-    all_cm_data = []
-
-    # Get the list of clanmates in Acorn
-    # for i in range(c_split_length):
-    #     if i != 0:
-    #         clanmates.append(clanmate_split[i].split(",")[0])
-
-    # Add in any eternal guests
-    # clanmates.append('Fairytale')
+# Returns a full list of clanmate names from the API based on the given clan name
+def get_clanmate_names(clan_name):
+     # Get clanmates from the API and convert result into a list of RSNs
+    clanmate_res = requests.get('http://services.runescape.com/m=clan-hiscores/members_lite.ws?clanName=' + clan_name)
+    clanmate_split = clanmate_res.text.split("\n")
+    c_split_length = len(clanmate_split)
+    clanmates = []
+    for i in range(c_split_length):
+        if i != 0:
+            clanmates.append(clanmate_split[i].split(",")[0])
 
     # Make sure there are no empty strings
-    # while '' in clanmates:
-    #     clanmates.remove('')
+    while '' in clanmates:
+        clanmates.remove('')
 
+    return clanmates
+
+# Return a list of clanmates with their current xp in each skill
+def get_current_xp_all(clanmates):
     # Store the number of people in the clanmate list
     clanmate_length = len(clanmates)
 
@@ -72,6 +69,7 @@ def get_current_xp_all(clanmates):
         clanmates[i] = clanmates[i].replace(u'\xa0', u' ')
 
     # For each clanmate get current xp for every skill [rsn, overall, attack, ...]
+    all_cm_data = []
     for i in range(clanmate_length):
         cm_data = [clanmates[i]]
 
@@ -223,6 +221,19 @@ def filter_no_xp_gained(list):
 
     return ret
 
+def divide_xp_into_teams(team1, team2, current_xp_gains):
+    team1_xp = [['Total', 0]]
+    team2_xp = [['Total', 0]]
+    for i in range(len(current_xp_gains)):
+        if current_xp_gains[i][0] in team1:
+            team1_xp[0][1] += current_xp_gains[i][1]        # Add this person's xp to their team's total xp
+            team1_xp.append(current_xp_gains[i])
+        elif current_xp_gains[i][0] in team2:
+            team2_xp[0][1] += current_xp_gains[i][1]
+            team2_xp.append(current_xp_gains[i])
+
+    return [team1_xp, team2_xp]
+
 # Get current standings
 def get_current_standings(participants, skill, file_name):
     # skills = [skill]
@@ -297,63 +308,3 @@ def get_current_standings_two_skills_two_teams(participants, skill1, skill2, fil
     #     ret_str += (str(i + 1) + '. ' + str(current_xp_gains[i][0]) + '\t' + '{:,}'.format(current_xp_gains[i][1])) + '\n'
 
     return ret_str
-
-def divide_xp_into_teams(team1, team2, current_xp_gains):
-    team1_xp = [['Total', 0]]
-    team2_xp = [['Total', 0]]
-    for i in range(len(current_xp_gains)):
-        if current_xp_gains[i][0] in team1:
-            team1_xp[0][1] += current_xp_gains[i][1]        # Add this person's xp to their team's total xp
-            team1_xp.append(current_xp_gains[i])
-        elif current_xp_gains[i][0] in team2:
-            team2_xp[0][1] += current_xp_gains[i][1]
-            team2_xp.append(current_xp_gains[i])
-
-    return [team1_xp, team2_xp]
-
-always_in = ['Andy Hunts', 'Mrawr', 'Supaskulled']
-participants =  ['Andy Hunts', 'Firekev', 'Gadnuka', 'Furry Daddy']
-comp_skill = MAGIC
-start_file = 'magic_1_start'
-standings_header = ':pick: Gauntlet Part 3: Mining Standings'
-
-team1 = ['Andy Hunts', 'Firekev']
-team2 = ['Furry Daddy', 'Gadnuka']
-
-# Competition start
-# current_xp = get_current_xp_all(participants)
-# store_xp_in_file(current_xp, start_file)
-
-# Competition standings update
-# print(get_current_standings(participants, comp_skill, start_file))
-
-# print(get_current_standings_one_skill_two_teams(participants, comp_skill, start_file, team1, team2))
-
-client = discord.Client()
-
-@client.event
-async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
-
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-
-    # Start comp: valid only if used by Alex, Ned, or Sandor
-    # if ((message.author.name == 'Riunn' or message.author.name == 'Mrawr' or message.author.name == 'ColonelSanders')
-    #     and message.content.startswith('!start comp')):
-    #     await message.channel.send('Valid admin, but competitions are not set up yet')
-
-    if message.content.startswith('!standings') or message.content.startswith('compbot'):
-        # await message.channel.send(standings_header)
-        # await message.channel.send(get_current_standings(participants, comp_skill, start_file))
-        await message.channel.send('loading...')
-        await message.channel.send(get_current_standings_one_skill_two_teams(participants, comp_skill, start_file, team1, team2))
-
-    if message.content.startswith('!help'):
-        str = 'use "!standings" or "compbot do the thing" to check standings for current competition'
-        await message.channel.send(str)
-
-
-client.run(DISCORD_KEY)

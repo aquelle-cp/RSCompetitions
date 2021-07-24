@@ -1,5 +1,41 @@
 import unittest
-from competitions import *
+from functions import *
+
+# Tests for functions.py
+class TestGetClanmateNames(unittest.TestCase):
+    # Warning: this test only checks that some names are returned, and that those contain a few known ones, doesn't check that
+    # all the names are returned because of the fluid nature of clan membership
+    def test_get_clanmate_names(self):
+        res = get_clanmate_names('Acorn')
+
+        # Checking against Acorn with players who don't change their rsn's
+        self.assertIn('Mrawr', res)
+        self.assertIn('Gadnuka', res)
+        self.assertIn('CompCake', res)
+        self.assertIn('MiracleEdrea', res)
+
+class TestGetCurrentXpAll(unittest.TestCase):
+    def test_get_current_xp_all(self):
+        res = get_current_xp_all(['Andy Hunts', 'Mrawr', 'Gadnuka', 'CompCake'])
+
+        self.assertEqual(res[0][0], 'Andy Hunts')
+        self.assertEqual(res[2][0], 'Gadnuka')
+        self.assertEqual(res[3][0], 'CompCake')
+        # Current xp is always changing, with the exception of players with 200m in a skill, so test against known 200ms
+        resMrawr = res[1]
+        self.assertEqual(resMrawr[0], 'Mrawr')
+        self.assertEqual(resMrawr[INVENTION], 200000000)
+        self.assertEqual(resMrawr[HUNTER], 200000000)
+        self.assertEqual(resMrawr[MAGIC], 200000000)
+        self.assertEqual(resMrawr[DEFENCE], 200000000)
+
+class TestStoreXpInFile(unittest.TestCase):
+    def test_store_xp_in_file(self):
+        pass
+
+class TestPullXpFromFile(unittest.TestCase):
+    def test_pull_xp_from_file(self):
+        pass
 
 class TestCalcXPGained(unittest.TestCase):
     def test_same_names(self):
@@ -76,6 +112,25 @@ class TestCalcCompGains(unittest.TestCase):
         res = calc_comp_gains(gains, skills)
 
         expected = [['test1', 144], ['test2', 55], ['test3', 92], ['test4', 171]]
+
+class TestFilterNoXpGained(unittest.TestCase):
+    def test_one_with_none(self):
+        res = filter_no_xp_gained([['CompCake', 0]])
+        self.assertEqual(res, [])
+
+    def test_one_with_xp(self):
+        res = filter_no_xp_gained([['Andy Hunts', 780334]])
+        self.assertEqual(res, [['Andy Hunts', 780334]])
+
+    def test_mult_with_one_none(self):
+        res = filter_no_xp_gained([['Andy Hunts', 780334], ['Gadnuka', 93022], ['CompCake', 0]])
+        self.assertEqual(res, [['Andy Hunts', 780334], ['Gadnuka', 93022]])
+
+    def test_mult_with_none_none(self):
+        res = filter_no_xp_gained([['Andy Hunts', 780334], ['Gadnuka', 93022], ['CompCake', 900]])
+        self.assertEqual(res, [['Andy Hunts', 780334], ['Gadnuka', 93022], ['CompCake', 900]])
+
+# Tests for run_cmd.py
 
 if __name__ == '__main__':
     unittest.main()
