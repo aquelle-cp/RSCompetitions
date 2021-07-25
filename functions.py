@@ -200,15 +200,7 @@ def calc_comp_gains(gains, skills):
         res.append(ares)
         ares = []
 
-# Returns a list of rsn's with xp gained in one skill (list passed in should have gains)
-def get_xp_one_skill(list, skill):
-    ret = []
-
-    # For each clanmate, pull out name and xp for passed in skill
-    for i in range(len(list)):
-        ret.append([list[i][0], list[i][skill]])
-
-    return ret
+    return res
 
 # Removes people from the result list that gained no xp in any of the skills
 def filter_no_xp_gained(list):
@@ -235,12 +227,12 @@ def divide_xp_into_teams(team1, team2, current_xp_gains):
     return [team1_xp, team2_xp]
 
 # Get current standings
-def get_current_standings(participants, skill, file_name):
+def get_current_standings_free_for_all(participants, skills, file_name):
     # skills = [skill]
     start_xp = pull_xp_from_file(file_name)
-    start_xp = get_xp_one_skill(start_xp, skill)
+    start_xp = calc_comp_gains(start_xp, skills)
     current_xp = get_current_xp_all(participants)
-    current_xp = get_xp_one_skill(current_xp, skill)
+    current_xp = calc_comp_gains(current_xp, skills)
     current_xp_gains = calc_xp_gained(start_xp, current_xp)
     current_xp_gains = filter_no_xp_gained(current_xp_gains)
     current_xp_gains = sorted(current_xp_gains, key=lambda l:l[1], reverse=True)
@@ -250,11 +242,11 @@ def get_current_standings(participants, skill, file_name):
 
     return ret_str
 
-def get_current_standings_one_skill_two_teams(participants, skill, file_name, team1, team2):
+def get_current_standings_two_teams(participants, skills, file_name, team1, team2):
     start_xp = pull_xp_from_file(file_name)
-    start_xp = get_xp_one_skill(start_xp, skill)
+    start_xp = calc_comp_gains(start_xp, skills)
     current_xp = get_current_xp_all(participants)
-    current_xp = get_xp_one_skill(current_xp, skill)
+    current_xp = calc_comp_gains(current_xp, skills)
     current_xp_gains = calc_xp_gained(start_xp, current_xp)
     current_xp_gains = filter_no_xp_gained(current_xp_gains)
     current_xp_gains = sorted(current_xp_gains, key=lambda l:l[1], reverse=True)
@@ -263,44 +255,11 @@ def get_current_standings_one_skill_two_teams(participants, skill, file_name, te
     team1_xp = team_xp[0]
     team2_xp = team_xp[1]
 
-    ret_str = ':top_hat: Magic Comp Standings\n'
+    ret_str = ''
     ret_str += 'Team 1:\n'
     for i in range(len(team1_xp)):
         ret_str += str(i) + '. ' + str(team1_xp[i][0]) + '\t'  + '{:,}'.format(team1_xp[i][1]) + '\n'
     ret_str += '\nTeam 2:\n'
-    for i in range(len(team2_xp)):
-        ret_str += str(i) + '. ' + str(team2_xp[i][0]) + '\t'  + '{:,}'.format(team2_xp[i][1]) + '\n'
-
-    # for i in range(len(current_xp_gains)):
-    #     ret_str += (str(i + 1) + '. ' + str(current_xp_gains[i][0]) + '\t' + '{:,}'.format(current_xp_gains[i][1])) + '\n'
-
-    return ret_str
-
-def get_current_standings_two_skills_two_teams(participants, skill1, skill2, file_name, team1, team2):
-    start_xp = pull_xp_from_file(file_name)
-    start_xp1 = get_xp_one_skill(start_xp, skill1)
-    start_xp2 = get_xp_one_skill(start_xp, skill2)
-    current_xp = get_current_xp_all(participants)
-    current_xp1 = get_xp_one_skill(current_xp, skill1)
-    current_xp2 = get_xp_one_skill(current_xp, skill2)
-    current_xp_gains1 = calc_xp_gained(start_xp1, current_xp1)
-    current_xp_gains2 = calc_xp_gained(start_xp2, current_xp2)
-
-    current_xp_gains = []
-    for i in range(len(current_xp_gains1)):
-        current_xp_gains.append([current_xp_gains1[i][0], current_xp_gains1[i][1] + current_xp_gains2[i][1]])
-    current_xp_gains = filter_no_xp_gained(current_xp_gains)
-    current_xp_gains = sorted(current_xp_gains, key=lambda l:l[1], reverse=True)
-
-    team_xp = divide_xp_into_teams(team1, team2, current_xp_gains)
-    team1_xp = team_xp[0]
-    team2_xp = team_xp[1]
-
-    ret_str = ''
-    ret_str += 'Team Cabbage :leafy_green: Xp\n'
-    for i in range(len(team1_xp)):
-        ret_str += str(i) + '. ' + str(team1_xp[i][0]) + '\t'  + '{:,}'.format(team1_xp[i][1]) + '\n'
-    ret_str += '\nTeam Potatoes :potato: Xp\n'
     for i in range(len(team2_xp)):
         ret_str += str(i) + '. ' + str(team2_xp[i][0]) + '\t'  + '{:,}'.format(team2_xp[i][1]) + '\n'
 

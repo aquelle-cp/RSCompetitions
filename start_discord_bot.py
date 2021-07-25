@@ -2,6 +2,11 @@ import discord
 
 from functions import *
 
+participants =  ['']
+comp_skill = MINING
+start_file = 'mining_1_start'
+standings_header = ':pick: Gauntlet Part 3: Mining Standings'
+
 client = discord.Client()
 
 @client.event
@@ -19,10 +24,10 @@ async def on_message(message):
     #     await message.channel.send('Valid admin, but competitions are not set up yet')
 
     if message.content.startswith('!standings') or message.content.startswith('compbot'):
-        # await message.channel.send(standings_header)
-        # await message.channel.send(get_current_standings(participants, comp_skill, start_file))
-        await message.channel.send('loading...')
-        await message.channel.send(get_current_standings_one_skill_two_teams(participants, comp_skill, start_file, team1, team2))
+        await message.channel.send(standings_header)
+        await message.channel.send(get_current_standings(participants, comp_skill, start_file))
+        # await message.channel.send('loading...')
+        # await message.channel.send(get_current_standings_one_skill_two_teams(participants, comp_skill, start_file, team1, team2))
 
     if message.content.startswith('!help'):
         str = 'use "!standings" or "compbot do the thing" to print current standings for the competition'
