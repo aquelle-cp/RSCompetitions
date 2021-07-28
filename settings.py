@@ -58,4 +58,4 @@ settings_team2 = ['rsn2', 'rsn4']
 settings_comp_skills = [THIEVING, SLAYER]
 
 # The name of the file you want to store the starting xp in
-settings_start_file = 'start_files/thieving_1_start'
+settings_start_file = 'test_file'

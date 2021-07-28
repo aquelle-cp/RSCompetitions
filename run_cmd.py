@@ -14,7 +14,7 @@ help_text = 'Usage:\n\trun_cmd.py <command>\n' + \
     '\t\t\t\tthe start file set in settings.py\n'
 help_opt = ['help', '-h']
 
-# If no arguments were specified
+# If no arguments were specified, print the help text
 if len(sys.argv) < 2:
     print('Invalid argument')
     print(help_text)
@@ -23,9 +23,24 @@ elif sys.argv[1] in help_opt:
     print(help_text)
 # start : if the file has content, print file name and are you sure you want to erase this file?
 elif sys.argv[1] == 'start':
-    # wd = os.path.dirname(__file__)
-    # path = os.path.join(wd, fname)
-    # f = open(path, 'r+')
+    wd = os.path.dirname(__file__)
+    path = os.path.join(wd, settings_start_file)
+    # Try to open the file and figure out if it has something in it
+    try:
+        f = open(path, 'r+')
+        # If the file has stuff in it, make sure the user wants to delete the current contents before continuing
+        if f.read() != '':
+            res = input('This file already has contents, would you like to erase it and use it for this competition? (y/n) ')
+            if res.lower() == 'y':
+                print('ok, deleting...')
+            else:
+                print('ok, cancelling operation')
+        # If the file is empty, continue
+        else:
+            print('file is empty, proceed')
+    # If the file doesn't exist yet, create it
+    except:
+        f = open(path, 'x')
     print('start')
 # update
 elif sys.argv[1] == 'update':
