@@ -58,4 +58,4 @@ s_team2 = ['TheTrueHelix', 'MiracleEdrea']
 s_comp_skills = [THIEVING, SLAYER]
 
 # The name of the file you want to store the starting xp in
-s_start_file = 'start_files/arch_4_start'
+s_start_file = 'test_file'

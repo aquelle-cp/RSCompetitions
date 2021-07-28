@@ -269,4 +269,46 @@ def get_current_standings_two_teams(participants, skills, file_name, team1, team
 
     return ret_str
 
-def add player
+# Takes a player and, if that player is active and exists, adds their current xp to the start file for the competition
+def add_player_to_comp(player_name, file_name):
+    # If the player name has any _ characters, replace with spaces
+    player_name_req = player_name.replace(u'_', u' ')
+
+    # Get current xp for this player
+    req = requests.get(STAT_REQUEST + player_name_req)
+
+    # If the user is inactive (404) their xp cannot be read and they can't be added to the competition
+    if req.status_code == 404:
+        print('The player with the RSN ' + player_name + ' is either inactive or does not exist, and cannot\n' + \
+            'be added to the competition')
+        return
+
+    # Open the start file
+    wd = os.path.dirname(__file__)
+    path = os.path.join(wd, file_name)
+    f = open(path, 'r')
+
+    # Check to see if the player is already in the file (the newline and the space insure that, if you're trying to add
+    # a player whose name is a substring of another player in the comp, the added player doesn't get blocked from joining)
+    str = '\n' + player_name + ' '
+    if str in f.read():
+        print(player_name + ' is already in this compeititon\'s start file')
+        f.close()
+        return
+    f.close()
+
+    # Parse the player's xp into a list so it can be put in the file
+    f = open(path, 'a')
+    player_data = [player_name]
+    player_raw_data = req.text.split('\n')
+    for i in range(NUM_SKILLS):
+        player_data.append(player_raw_data[i].split(',')[2])
+
+    # Add the xp to the end of the start file
+    for i in range(len(player_data)):
+        print(player_data[i], end=' ', file=f)
+    print('', file=f)
+
+    f.close()
+    print(player_name + ' has been added to the competition start file')
+    return

@@ -49,7 +49,8 @@ def update_comp():
 
 # Add player(s) to the comp by appending their current xp values to the end of the start file
 def add_players(player_names):
-    pass
+    for n in player_names:
+        add_player_to_comp(n, s_start_file)
 
 ### Command parsing
 help_text = 'Usage:\n\trun_cmd.py <command>\n' + \
@@ -58,8 +59,9 @@ help_text = 'Usage:\n\trun_cmd.py <command>\n' + \
     '\tstart\tStarts a competition with the participants set in settings.py\n' + \
     '\tupdate\tDisplays the current standings for the competition, with the \n' + \
     '\t\tparticipants, type, and skill(s) set in settings.py\n' + \
-    '\tadd [player_name]\tAdds the current xp of the player specified to \n' + \
-    '\t\t\t\tthe start file set in settings.py\n'
+    '\tadd [player_name(s)]\tAdds the current xp of the players specified to \n' + \
+                        '\t\t\t\tthe start file set in settings.py (Note: if the\n' + \
+                        '\t\t\t\tname has spaces, replace them with _)\n'
 help_opt = ['help', '-h']
 
 # If no arguments were specified, print the help text
@@ -75,13 +77,12 @@ elif sys.argv[1] == 'start':
 # update command prints out the current comp standings based on comp type, skill, and participants from settings
 elif sys.argv[1] == 'update':
     update_comp()
-# add [player] command adds a player's current xp to an ongoing competition's
+# add [player(s)] command adds a player's current xp to an ongoing competition's
 elif sys.argv[1] == 'add':
     if len(sys.argv) == 2:
         print('Please specify the name of the player to add to the comp in the format:\n run_cmd.py add [player_name]')
     else:
         add_players(sys.argv[2:])
-        print('adding player(s)')
 # If the pattern didn't match any of the above, print a notice then the help text
 else:
     print('Invalid arguments')
