@@ -226,7 +226,7 @@ def divide_xp_into_teams(team1, team2, current_xp_gains):
 
     return [team1_xp, team2_xp]
 
-# Get current standings
+# Get current standings for a free for all comp
 def get_current_standings_free_for_all(participants, skills, file_name):
     # skills = [skill]
     start_xp = pull_xp_from_file(file_name)
@@ -242,6 +242,7 @@ def get_current_standings_free_for_all(participants, skills, file_name):
 
     return ret_str
 
+# Get current standings for a two team comp
 def get_current_standings_two_teams(participants, skills, file_name, team1, team2):
     start_xp = pull_xp_from_file(file_name)
     start_xp = calc_comp_gains(start_xp, skills)
@@ -267,3 +268,5 @@ def get_current_standings_two_teams(participants, skills, file_name, team1, team
     #     ret_str += (str(i + 1) + '. ' + str(current_xp_gains[i][0]) + '\t' + '{:,}'.format(current_xp_gains[i][1])) + '\n'
 
     return ret_str
+
+def add player
