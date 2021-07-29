@@ -20,7 +20,7 @@ async def on_message(message):
             await message.channel.send(get_current_standings_free_for_all(s_participants, s_comp_skills, s_start_file))
         elif s_comp_type == TWO_TEAMS:
             await message.channel.send('loading...')
-            await message.channel.send(get_current_standings_one_skill_two_teams(s_participants, s_comp_skill, s_start_file, s_team1, s_team2))
+            await message.channel.send(get_current_standings_two_teams(s_participants, s_comp_skills, s_start_file, s_team1, s_team2))
         else:
             await message.channel.send('The s_comp_type in settings.py is invalid')
 
