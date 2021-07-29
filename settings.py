@@ -55,7 +55,10 @@ s_team2 = ['TheTrueHelix', 'MiracleEdrea']
 
 # The skills for the competition. Use the variable constant names defined above. If the competition is for all skills, use OVERALL
 # instead of listing all skills
-s_comp_skills = [THIEVING, SLAYER]
+s_comp_skills = [MINING]
 
 # The name of the file you want to store the starting xp in
-s_start_file = 'test_file'
+s_start_file = 'start_files/arch_4_start'
+
+# For the discord bot only: a header that prints out before the current standings prints
+s_standings_header = ':pick: Mining Comp Standings'
