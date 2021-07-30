@@ -29,9 +29,12 @@ pip3 install -r requirements.txt
 
 ## Usage
 
-Staring the competition
+### Staring the competition
 
 1. Open the settings.py file in a text editor (Notepad on Windows, TextEdit on Mac, etc.) and modify the variables
+```python
+s_comp_type =     # Either FREE_FOR_ALL or TWO_TEAMS
+```
 
  
 
