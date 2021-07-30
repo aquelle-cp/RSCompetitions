@@ -33,9 +33,41 @@ pip3 install -r requirements.txt
 
 1. Open the settings.py file in a text editor (Notepad on Windows, TextEdit on Mac, etc.) and modify the variables
 ```python
-s_comp_type =     # Either FREE_FOR_ALL or TWO_TEAMS
+s_comp_type          # Either FREE_FOR_ALL or TWO_TEAMS
+                     # FREE_FOR_ALL displays each person's xp individually
+                     # TWO_TEAMS displays xp split into the teams, and requires the
+                     #   s_team1 and s_team2 variables to also be set
+                     # ex. s_comp_type = FREE_FOR_ALL
+                     
+s_participants       # A list of the RSNs of the people participating in the competition
+                     # ex. s_participants = ['rsn1', 'rsn2', 'rsn3', 'rsn4']
+                     
+s_team1              # Only needs to be set if s_comp_type is TWO_TEAMS, a list of the
+                     # RSNs of the people on the first team
+                     # ex. s_team1 = ['rsn1', 'rsn3']
+                     
+s_team2              # Same as above, but the second team
+                     # ex. s_team2 = ['rsn2', 'rsn4']
+                     
+s_comp_skills        # List of skills the competition is for (the way the skills are
+                     # written needs to correspond to the constants listed in the 
+                     # settings.py file, basically just all caps and not in quotes)
+                     # ex. s_comp_skills = [HUNTER, FISHING]
+                     # ex. s_comp_skills = [RUNECRAFTING]
+                     
+s_start_file         # The path to the file you want to record the starting values for the
+                     # competition in, I recommend having a folder for these files, I call
+                     # mine start_files, just to keep them separate from the code
+                     # Note that if the file doesn't exist, it'll create it for you, and if
+                     # the file exists and has contents, it'll ask for confirmation before
+                     # deleting any contents and replacing with the start files
+                     # ex. s_start_file = 'start_files/rc_1_comp'
+                     
+s_standings_header   # Only set if you're using a discord bot, otherwise this won't do
+                     # anything
 ```
 
+2. Open terminal and navigate to the RSCompetitions folder
  
 
 
