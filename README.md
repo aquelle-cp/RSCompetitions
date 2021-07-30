@@ -8,18 +8,22 @@ First, a little bit of background. My clan uses Discord to talk outside the game
 
 ## Installation
 
-1. Make sure you have Python installed (instructions here: ___)
+1. Make sure you have Python installed (version 3+)
+```bash
+python3 --version
+```
+If you don't, download from [here](https://www.python.org/downloads/)
 
-2. Clone the repository (enter this in the command line)
+2. Clone the repository (enter this in the command line or terminal ____ figure out what this is on Windows)
 
 ```bash
-git clone ___
+git clone git@github.com:aquelle-cp/RSCompetitions.git
 ```
 
-3. Install dependencies
+3. Install dependencies (pip3 should have been included with Python)
 
 ```bash
-pip3 install requirements.txt ___?
+pip3 install -r requirements.txt
 ```
 
 ## Setting up the Discord bot
