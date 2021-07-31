@@ -9,14 +9,14 @@ First, a little bit of background. My clan uses Discord to talk outside the game
 ## Installation
 
 1. Make sure you have Python installed (should return Python 3.x.x, if it doesn't, download from [here](https://www.python.org/downloads/))
-  ```bash
-  python3 --version
-  ```
+    ```bash
+    python3 --version
+    ```
 
 2. Clone the repository (enter this in the terminal)
-  ```bash
-  git clone git@github.com:aquelle-cp/RSCompetitions.git
-  ```
+    ```bash
+    git clone git@github.com:aquelle-cp/RSCompetitions.git
+    ```
 
 3. Install dependencies (pip3 should have been included with Python)
 ```bash
