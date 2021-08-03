@@ -4,7 +4,11 @@ RSCompetitions is a command line tool I wrote to track clan competitions in Rune
 
 There are two main parts to this: starting the competition and getting the in-progress standings. To start the competition, the initial xp values of the clan have to be pulled from the API and recorded in a file for later. To get updates on the standings, the current values have to be pulled from the API again and compared against the starting values that were stored in that first file. Since project is a command line tool, both both starting and updating are done through commands in the command line, though there are two ways to update.
 
-First, a little bit of background. My clan uses Discord to talk outside the game and to set up events and competitions, since if something is discussed only in the clan chat in the game itself, anyone who is offline at the time won’t see it. In order to run competitions, I set up a post in Discord with the details and time and instructions to sign up. Sign ups are done through the reactions system in Discord: if someone has added a reaction to the post, they’ve signed up for that competition. In order to update an ongoing competition, I used to run the command line tool locally on my computer periodically throughout the competition (every 12 hours or so, more frequently if someone requested an update), and copy/paste the results from my command line to the Discord channel. Eventually I made a Discord bot that I could run locally (I never did get around to hosting it, so I have it running on a Raspberry Pi usually just so it’s out of the way but still up for the duration of the competition). People could type the trigger command in the chat on Discord and the bot would go run the update command and print the results. This option is much nicer, it means I don’t have to remember to be updating the standings frequently, and people don’t have to rely on my schedule for competition updates. That being said, there is a lot more setup required for the Discord bot version, as well as a computer you don’t mind leaving on for the duration of the competition, or a way to host the bot
+## Background
+
+First, a little bit of background on how my clan runs clan competitions, and how I use this tool to do that. My clan uses Discord to talk outside the game and to set up events and competitions, since if something is discussed only in the clan chat in the game itself, anyone who is offline at the time won’t see it. When we start a competition, it's announced in the Discord channel, then updates on the standings are posted as the competition goes on.
+
+To start a competition, I run the start command right at the start time for the competition, and announce in Discord that it began. The command line version of the update command was the original way to do it, I would run that command every 12 hours or so and post the resulting current standings in the Discord channel, more often if it was requested and I was available. With the Discord bot, right after starting up the competition, I'd start up the Discord bot too on a computer I didn't mind leaving on for the entirety of the competition (I used a Raspberry Pi). The Discord bot version is easier for everyone since they can see the updates whenever they want and I don't have to remember to post them, but it requires more set up.
 
 ## Installation
 
@@ -147,5 +151,13 @@ Occasionally you'll have a situation where someone missed the signups, or joined
     ```
 
 5. Type '!standings' or 'compbot do the thing!' in the channel you invited the bot to, it should print out the standings header first while it's working on the standings, then it'll print out the standings when it's done pulling and calculating them
+
+## Important notes
+
+- The Runescape API updates when players lobby or log out, so if you want your current xp to be reflected in the standings updates, you have to lobby or log out first
+- In the same way, the start command will pull current xp from when someone last lobbied or logged out, so if people are logged in when the competition starts, it might not necessarily be their current xp but whatever they were at when they logged in
+     - For my clan, I just tell everyone this and ask people to lobby before the competition starts if they've been training the skill, since cheating isn't usually a problem in a clan as small as mine. But if you have anyone in the clan who might want to mess with the competition and they know about it, they could potentially gain a bunch of xp in a session before the competition, and not lobby or log out until after it starts, which would give them a head start, so fair warning
+     
+- The update command will not show players who haven't gained any xp for the competition. I didn't want to call anyone out who hadn't gotten around to participating despite signing up, or who had been busy
 
 
