@@ -2,7 +2,7 @@
 
 RSCompetitions is a command line tool I wrote to track clan competitions in Runescape 3 when the tracker my clan used previously was offline intermittently for a couple of weeks. These competitions involve tracking the xp gains of clan members and posting the in-progress standings over the duration of the competition. 
 
-There are two main parts to this: starting the competition and getting the in-progress standings. To start the competition, the initial xp values of the clan have to be pulled from the API and recorded in a file for later. To get updates on the standings, the current values have to be pulled from the API again and compared against the starting values that were stored in that first file. Since project is a command line tool, both starting and updating are done through commands in the command line, though there are two different ways to run the update command.
+There are two main parts to this: starting the competition and getting the in-progress standings. To start the competition, the initial xp values of the clan have to be pulled from the API and recorded in a file for later. To get updates on the standings, the current values have to be pulled from the API again and compared against the starting values that were stored in that first file. Since the project is a command line tool, both starting and updating are done through commands in the command line, though there are two different ways to run the update command.
 
 ## Background
 
