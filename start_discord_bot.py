@@ -2,6 +2,7 @@ import discord
 
 from functions import *
 from settings import *
+from key import *
 
 client = discord.Client()
 
