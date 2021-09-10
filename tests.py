@@ -1,5 +1,6 @@
 import unittest
 from functions import *
+from settings import *
 
 # Tests for functions.py
 class TestGetClanmateNames(unittest.TestCase):

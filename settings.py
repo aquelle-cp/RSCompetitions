@@ -29,7 +29,7 @@ SUMMONING = 25
 DUNGEONEERING = 26
 DIVINATION = 27
 INVENTION = 28
-ARCHEOLOGY = 29
+ARCHAEOLOGY = 29
 
 FREE_FOR_ALL = 0
 TWO_TEAMS = 1
@@ -45,7 +45,8 @@ s_comp_type = FREE_FOR_ALL
 # The RSNs of the people participating in the competition, in quotes and comma-separated. If you want to track all players in the
 # clan use get_clanmate_names("your clan name goes here") instead of the array. This isn't recommended unless the majority of the
 # clan is participating in the competition because the extra API requests make the updates incredibly slow to run
-s_participants =  ['Firekev', 'Gadnuka', 'TheTrueHelix', 'MiracleEdrea']
+s_participants =  ['CompCake', 'MiracleEdrea', 'TheTrueHelix', 'Fairytale', 'Mrawr', 'Gadnuka']
+s_osrs_participants = ['Gadnuka']
 
 # If the competition is a team comp, use these to list the RSNs of the players on each team. NOTE: the participants variable (above)
 # must also include all of the RSNs of the players participating, if it doesn't, even if all of the participants are listed in these
@@ -55,7 +56,8 @@ s_team2 = ['TheTrueHelix', 'MiracleEdrea']
 
 # The skills for the competition. Use the variable constant names defined above. If the competition is for all skills, use OVERALL
 # instead of listing all skills
-s_comp_skills = [MINING]
+s_comp_skills = [AGILITY, THIEVING, SLAYER, DUNGEONEERING, MINING, FISHING, WOODCUTTING, FARMING, HUNTER,
+                DIVINATION, ARCHAEOLOGY]
 
 # The name of the file you want to store the starting xp in
 s_start_file = 'start_files/arch_4_start'

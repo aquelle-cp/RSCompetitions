@@ -4,43 +4,12 @@ import sys
 
 from key import *
 
-# If xp is -1 will have to skip over, doesn't have reqs or is at 0 xp
-
-# Constants for request parsing
-OVERALL = 1
-ATTACK = 2
-DEFENCE = 3
-STRENGTH = 4
-CONSTITUTION = 5
-RANGED = 6
-PRAYER = 7
-MAGIC = 8
-COOKING = 9
-WOODCUTTING = 10
-FLETCHING = 11
-FISHING = 12
-FIREMAKING = 13
-CRAFTING = 14
-SMITHING = 15
-MINING = 16
-HERBLORE = 17
-AGILITY = 18
-THIEVING = 19
-SLAYER = 20
-FARMING = 21
-RUNECRAFTING = 22
-HUNTER = 23
-CONSTRUCTION = 24
-SUMMONING = 25
-DUNGEONEERING = 26
-DIVINATION = 27
-INVENTION = 28
-ARCHEOLOGY = 29
-
 NUM_SKILLS = 29
+NUM_SKILLS_OSRS = 24
 
 # The template for a player stat request
 STAT_REQUEST = 'https://secure.runescape.com/m=hiscore/index_lite.ws?player='
+STAT_REQUEST_OSRS = 'https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player='
 
 # Returns a full list of clanmate names from the API based on the given clan name
 def get_clanmate_names(clan_name):
@@ -60,7 +29,7 @@ def get_clanmate_names(clan_name):
     return clanmates
 
 # Return a list of clanmates with their current xp in each skill
-def get_current_xp_all(clanmates):
+def get_current_xp_all(clanmates, osrs_clanmates = []):
     # Store the number of people in the clanmate list
     clanmate_length = len(clanmates)
 
@@ -71,10 +40,21 @@ def get_current_xp_all(clanmates):
     # For each clanmate get current xp for every skill [rsn, overall, attack, ...]
     all_cm_data = []
     for i in range(clanmate_length):
+        # First spot is the name of the clanmate
         cm_data = [clanmates[i]]
 
+        # Set the req_url and the num_skills_var to the rs3 version by default, and
+        # the osrs version if this player is in the osrs list
+        if clanmates[i] in osrs_clanmates:
+            req_url = STAT_REQUEST_OSRS
+            num_skill_var = NUM_SKILLS_OSRS
+        else:
+            req_url = STAT_REQUEST
+            num_skill_var = NUM_SKILLS
+
+
         # Get user data from api
-        req = requests.get(STAT_REQUEST + clanmates[i])
+        req = requests.get(req_url + clanmates[i])
 
         # If the user isn't active, api returns 404, skip it
         if req.status_code == 404:
@@ -82,7 +62,7 @@ def get_current_xp_all(clanmates):
 
         # Add each skill xp data point to the clanmate
         cm_stats = req.text.split("\n")
-        for i in range(NUM_SKILLS):
+        for i in range(num_skill_var):
             cm_data.append(cm_stats[i].split(",")[2])
 
         # Add the clanmate with their data to the list of clanmates
@@ -292,7 +272,7 @@ def add_player_to_comp(player_name, file_name):
     # a player whose name is a substring of another player in the comp, the added player doesn't get blocked from joining)
     str = '\n' + player_name + ' '
     if str in f.read():
-        print(player_name + ' is already in this compeititon\'s start file')
+        print(player_name + ' is already in this competition\'s start file')
         f.close()
         return
     f.close()
