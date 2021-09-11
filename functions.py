@@ -46,6 +46,7 @@ def get_current_xp_all(clanmates, osrs_clanmates = []):
         # Set the req_url and the num_skills_var to the rs3 version by default, and
         # the osrs version if this player is in the osrs list
         if clanmates[i] in osrs_clanmates:
+            # print('osrs req triggered')
             req_url = STAT_REQUEST_OSRS
             num_skill_var = NUM_SKILLS_OSRS
         else:
@@ -64,6 +65,12 @@ def get_current_xp_all(clanmates, osrs_clanmates = []):
         cm_stats = req.text.split("\n")
         for i in range(num_skill_var):
             cm_data.append(cm_stats[i].split(",")[2])
+
+        # If this player is osrs, add 0's to the end so they have the same number
+        # of skill xps as rs3 players
+        if num_skill_var == NUM_SKILLS_OSRS:
+            for i in range(NUM_SKILLS - NUM_SKILLS_OSRS):
+                cm_data.append('0')
 
         # Add the clanmate with their data to the list of clanmates
         all_cm_data.append(cm_data)
@@ -176,7 +183,8 @@ def calc_comp_gains(gains, skills):
         ares.append(player[0])
         ares.append(0)
         for s in skills:
-            ares[1] += player[s]
+            if player[s] != '-1':
+                ares[1] += player[s]
         res.append(ares)
         ares = []
 
@@ -207,11 +215,11 @@ def divide_xp_into_teams(team1, team2, current_xp_gains):
     return [team1_xp, team2_xp]
 
 # Get current standings for a free for all comp
-def get_current_standings_free_for_all(participants, skills, file_name):
+def get_current_standings_free_for_all(participants, osrs_participants, skills, file_name):
     # skills = [skill]
     start_xp = pull_xp_from_file(file_name)
     start_xp = calc_comp_gains(start_xp, skills)
-    current_xp = get_current_xp_all(participants)
+    current_xp = get_current_xp_all(participants, osrs_participants)
     current_xp = calc_comp_gains(current_xp, skills)
     current_xp_gains = calc_xp_gained(start_xp, current_xp)
     current_xp_gains = filter_no_xp_gained(current_xp_gains)
@@ -223,10 +231,10 @@ def get_current_standings_free_for_all(participants, skills, file_name):
     return ret_str
 
 # Get current standings for a two team comp
-def get_current_standings_two_teams(participants, skills, file_name, team1, team2):
+def get_current_standings_two_teams(participants, osrs_participants, skills, file_name, team1, team2):
     start_xp = pull_xp_from_file(file_name)
     start_xp = calc_comp_gains(start_xp, skills)
-    current_xp = get_current_xp_all(participants)
+    current_xp = get_current_xp_all(participants, osrs_participants)
     current_xp = calc_comp_gains(current_xp, skills)
     current_xp_gains = calc_xp_gained(start_xp, current_xp)
     current_xp_gains = filter_no_xp_gained(current_xp_gains)

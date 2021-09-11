@@ -60,7 +60,7 @@ s_comp_skills = [AGILITY, THIEVING, SLAYER, DUNGEONEERING, MINING, FISHING, WOOD
                 DIVINATION, ARCHAEOLOGY]
 
 # The name of the file you want to store the starting xp in
-s_start_file = 'start_files/arch_4_start'
+s_start_file = 'start_files/test_start'
 
 # For the discord bot only: a header that prints out before the current standings prints
-s_standings_header = ':pick: Mining Comp Standings'
+s_standings_header = ':evergreen_tree: :people_hugging: Gathering/Support Comp Standings'

@@ -1,6 +1,6 @@
 # RSCompetitions
 
-RSCompetitions is a command line tool I wrote to track clan competitions in Runescape 3 when the tracker my clan used previously was offline intermittently for a couple of weeks. These competitions involve tracking the xp gains of clan members and posting the in-progress standings over the duration of the competition. 
+RSCompetitions is a command line tool I wrote to track clan competitions in Runescape 3 when the tracker my clan used previously was offline intermittently for a couple of weeks. These competitions involve tracking the xp gains of clan members and posting the in-progress standings over the duration of the competition.
 
 There are two main parts to this: starting the competition and getting the in-progress standings. To start the competition, the initial xp values of the clan have to be pulled from the API and recorded in a file for later. To get updates on the standings, the current values have to be pulled from the API again and compared against the starting values that were stored in that first file. Since the project is a command line tool, both starting and updating are done through commands in the command line, though there are two different ways to run the update command.
 
@@ -57,7 +57,7 @@ This file contains the variables that hold the data that changes from competitio
                          # ex. s_team2 = ['rsn2', 'rsn4']
 
     s_comp_skills        # A list of skills the competition is for (the way the skills are
-                         # written needs to correspond to the constants listed in the 
+                         # written needs to correspond to the constants listed in the
                          # settings.py file, basically just all caps and not in quotes)
                          # Note: if you're running a competition for overall xp (all skills),
                          # use OVERALL instead of listing all the skills out
@@ -67,13 +67,13 @@ This file contains the variables that hold the data that changes from competitio
     s_start_file         # The path to the file you want to record the starting values for the
                          # competition in. I recommend having a folder for these files, I call
                          # mine start_files, just to keep them separate from the code
-                         # Note: if the file doesn't exist, it'll create it for you, and if
+                         # Note: if the file doesn't exist, it'll create it for you.  If
                          # the file exists and has contents, it'll ask for confirmation before
-                         # deleting any contents and replacing with the start files
-                         # ex. s_start_file = 'start_files/rc_1_comp'
+                         # deleting any contents and replacing them with the new start file
+                         # ex. s_start_file = 'start_files/rc_comp'
 
     s_standings_header   # (Only set this if you're using a Discord bot)
-                         # If you are using a Discord bot, this will print to the channel 
+                         # If you are using a Discord bot, this will print to the channel
                          # when the update is triggered, so it serves both as a header and as
                          # confirmation to the player that requested the update that the
                          # program is working on getting the current standings, since that
@@ -107,7 +107,7 @@ This file contains the variables that hold the data that changes from competitio
 
 2. Open terminal and navigate to the RSCompetitions folder
 
-3. In that folder in terminal, run 
+3. In that folder in terminal, run
     ```bash
     python3 run_cmd.py update
     ```
@@ -156,9 +156,7 @@ Occasionally you'll have a situation where someone missed the signups, or joined
 - The Runescape API updates when players lobby or log out, so if you want your current xp to be reflected in the standings updates, you have to lobby/log first
 - In the same way, the start command will pull current xp from when someone last lobbied/logged, so if people are logged in when the competition starts, it might not necessarily be their current xp but whatever they were at when they logged in
      - For my clan, I just tell everyone this and ask people to lobby before the competition starts if they've been training the skill, since cheating isn't usually a problem in a clan as small as mine. But if you have anyone in the clan who might want to mess with the competition and they're told about it, they could potentially gain a bunch of xp in a session before the competition, and not lobby/log until after it starts, which would give them a head start, so fair warning
-     
+
 - The update command will not show players who haven't gained any xp for the competition. I didn't want to call anyone out who hadn't gained any xp yet in a competition, so this was intentional
 
 - Usually if a player's xp is not updating, it's because they haven't lobbied/logged yet. If they have and it still isn't updating, it's possible the API is not updating properly for that player. We've had instances where one or two players' xp wouldn't update for several hours, but everyone else's was updating fine. If you wait it out, it'll update eventually
-
-

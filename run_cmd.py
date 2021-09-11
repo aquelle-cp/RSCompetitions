@@ -31,7 +31,7 @@ def start_comp():
     f.close()
 
     # Get current xp for all participants and store it in the start file
-    current_xp = get_current_xp_all(s_participants)
+    current_xp = get_current_xp_all(s_participants, s_osrs_participants)
     store_xp_in_file(current_xp, s_start_file)
 
     print('The start file for this competition has been written')
@@ -41,9 +41,10 @@ def start_comp():
 # Update the comp by printing out the current competition standings
 def update_comp():
     if s_comp_type == FREE_FOR_ALL:
-        print(get_current_standings_free_for_all(s_participants, s_comp_skills, s_start_file))
+        print(get_current_standings_free_for_all(s_participants, s_osrs_participants, s_comp_skills, s_start_file))
     elif s_comp_type == TWO_TEAMS:
-        print(get_current_standings_two_teams(s_participants, s_comp_skills, s_start_file, s_team1, s_team2))
+        print(get_current_standings_two_teams(s_participants, s_osrs_participants, s_comp_skills, s_start_file,
+                s_team1, s_team2))
     else:
         print('The s_comp_type value in settings.py is invalid')
 
