@@ -10,6 +10,14 @@ First, a little bit of background on how my clan runs clan competitions, and how
 
 To start a competition, I run the start command right at the start time for the competition, and announce in the Discord channel that it has begun. The command line version of the update command was the original way to do it, and I would run that command every 12 hours or so and post the resulting current standings in the Discord channel (more frequently if it was requested and I was available). The second way to run the command is the Discord bot. When using the bot, right after starting up the competition, I start up the bot on a computer I didn't mind leaving on for the entirety of the competition (I used a Raspberry Pi). The Discord bot version is easier for everyone since they can see the updates whenever they want and I don't have to remember to post them, but it requires more set up and a computer to have it running for the duration of the competition.
 
+## A Note on OldSchool RS
+
+A short summary of this section first: this program can track players in both OSRS and RS3, with some limitations. See the last paragraph of this section for the limitations, and the Usage section for the setting that controls whether a player is tracked in OSRS or RS3.
+
+Though OSRS and RS3 don't share a clan system, if a clan is like mine, a lot of talking and event planning goes on in Discord instead of RS3, so even players who have switched from RS3 to playing more OSRS will still stay in touch with the clan. Recently we had one of our clanmates who has been playing mainly OSRS want to participate in a skilling competition with their OSRS account, despite the disadvantage that would put him at (OSRS xp rates tend to be lower than RS3), just for fun. The part of the RS3 API that I use to pull character xp data is almost identical to the corresponding part of the the OSRS API, so I converted the core function to get player xp and added a variable to hold the names of the players who are playing in OSRS that the function can read data from.
+
+There are some problems with the way this works right now though. From what I've seen, because the playerbase in OSRS is so much larger than in RS3, even players that have levels and a reasonable amount of xp in a skill might not be ranked, which causes the API call to sometimes return -1 for their xp instead of the actual amount. Because of this, if a player has skills in the competition that are not ranked, their xp either might not track, or, if during the competition they get their xp high enough to be ranked, it might count the entirety of their xp for that skill as their gains for the competition (since the program thinks they started at -1). This is far from ideal, and is something I'll be looking into later, but for now this is how it works. If you have a player or players that want to use OSRS xp, [this](https://secure.runescape.com/m=hiscore_oldschool/overall) is the link to the official OSRS hiscores where you can check if their skills for the compeittion are ranked yet. If the page for that player is missing skills, those skills are not ranked. 
+
 ## Installation
 
 1. Make sure you have Python installed (this should return Python 3.x.x; if it doesn't, download from [here](https://www.python.org/downloads/))
@@ -48,6 +56,11 @@ This file contains the variables that hold the data that changes from competitio
                          # time to start and update (for reference, with a clan of 40 it would
                          # take several minutes to pull the data from the API and update)
                          # ex. s_participants = ['rsn1', 'rsn2', 'rsn3', 'rsn4']
+                         
+    s_osrs_participants  # A list of RSNs of the players participating in the competition from
+                         # their OSRS account. These players must also be listed in
+                         # s_participants
+                         # ex. s_osrs_participants = ['rsn3']
 
     s_team1              # (Only set this if you're running a two team competition)
                          # A list of the RSNs of the people on the first team
